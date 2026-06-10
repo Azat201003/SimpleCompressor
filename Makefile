@@ -1,12 +1,29 @@
 SOURCES = \
 	src/main.cpp \
+	src/common.cpp \
 	src/compress.cpp \
 	src/decompress.cpp
-TARGET = simple-compressor
+HEADERS = \
+	src/common.h \
+	src/compress.h \
+	src/decompress.h
+TARGET = sc
 CXX = clang++
 CXXFLAGS = -O3
+LINT = cpplint
+LINTFLAGS = --root
 
-all: $(TARGET)
+.PHONY: lint build clear
+
+all: build
 
 $(TARGET): $(SOURCES)
 	$(CXX) $(CXXFLAGS) $^ -o $@
+
+lint: $(SOURCES) $(HEADERS)
+	$(LINT) $(LINTFLAGS) $^
+
+build: $(TARGET)
+
+clear:
+	rm -f $(TARGET)
